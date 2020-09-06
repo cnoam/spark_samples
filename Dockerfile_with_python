@@ -1,0 +1,3 @@
+FROM  spark:latest
+RUN apk --update add python python-dev
+
