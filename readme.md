@@ -14,14 +14,20 @@ Instead of using real computers or virtual machines, we will use *Docker contain
 
 ## Prerequisites
 * Docker is installed
-//* you have root permissions
+
 
 First, 
 create the docker network:
 `docker network create spark_network`
 
 Then,
-build and run the containers:
+build the images:
+`docker build  -t spark:latest .`
+`docker build -t spark_py -f ./Dockerfile_with_python .`
+
+and the Livy docker image as well: TBD
+
+and run the containers:
 `docker-compose up --scale spark-worker=3`
 
 **NOTE:

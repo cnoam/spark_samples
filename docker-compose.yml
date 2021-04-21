@@ -1,7 +1,7 @@
-version: "3.3"
+version: "3.4"
 services:
   spark-master:
-    image: spark:latest
+    image: spark_py:247
     container_name: spark-master
     hostname: spark-master
     ports:
@@ -15,7 +15,7 @@ services:
       - "SPARK_MASTER_WEBUI_PORT=8080"
     command: "/start-master.sh"
   spark-worker:
-    image: spark_py:latest
+    image: spark_py:247
     depends_on:
       - spark-master
     ports:
@@ -26,6 +26,19 @@ services:
       - "SPARK_MASTER=spark://spark-master:7077"
       - "SPARK_WORKER_WEBUI_PORT=8080"
     command: "/start-worker.sh"
+    
+  spark-livy:
+    image: livy-spark:latest
+    depends_on:
+      - spark-master
+    ports:
+      - "8998:8998"
+    networks:
+      - spark-network
+    environment:
+      - "SPARK_MASTER=spark://spark-master:7077"
+      - "SPARK_WORKER_WEBUI_PORT=8080"
+    
 networks:
   spark-network:
     driver: bridge

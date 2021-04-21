@@ -1,3 +1,6 @@
-FROM  spark:latest
+FROM  spark:247
 RUN apk --update add python python-dev
+
+# TODO: is the env file realy used?
+COPY conf/spark-env.sh /
 
