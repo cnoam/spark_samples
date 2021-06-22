@@ -35,6 +35,8 @@ services:
       - "8998:8998"
     networks:
       - spark-network
+    volumes:
+      - .:/opt/nifi/nifi-current/external/spark
     environment:
       - "SPARK_MASTER=spark://spark-master:7077"
       - "SPARK_WORKER_WEBUI_PORT=8080"

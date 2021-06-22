@@ -1,5 +1,14 @@
 FROM  spark:247
-RUN apk --update add python python-dev
+RUN apk --update add python python-dev py-pip
+
+# in order to install numpy, we need the C compiler
+RUN apk add build-base
+RUN pip install numpy
+RUN apk add snappy
+
+#snappy/snappymodule.cc:32:10: fatal error: snappy-c.h: No such file or directory
+#     #include <snappy-c.h>
+RUN pip install python-snappy
 
 # TODO: is the env file realy used?
 COPY conf/spark-env.sh /

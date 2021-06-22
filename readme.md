@@ -1,3 +1,13 @@
+# The GRAND PLAN
+implement this flow:
+
+* user submit a python file to Checker
+* Checker uses Livy Client code to submit the python file (possibly with data files) to Livy server.
+* the Livy server runs somewhere in the cloud, and connects to Spark main node, which is part of HDInsight cluster.
+* the main node dispatches the commands and collects the results.
+
+
+
 # Playing with spark on local machine with Docker
 
 Run Docker container with the spark master, and a few workers.
