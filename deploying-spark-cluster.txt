@@ -1,0 +1,68 @@
+Spark cluster deployment and sanity check
+
+** follow instructions to install az here https://docs.microsoft.com/en-us/cli/azure/install-azure-cli-linux?pivots=apt
+One time setup:
+* install using the above link
+* az login
+* az account set --subscription "IEM - 096224"
+
+
+
+1. in the Azure portal, go to HDinsight clusters, and verify there is none  active
+2. run the deploy script in spark/conf/ex2 
+
+    az deployment group create --resource-group ddscourse-infrastructure-group   --template-file ./template.json  --parameters parameters.json
+    
+3. run
+ssh-copy-id sshuser@<master host name>
+
+4. connect to the Checker, http://homework-tester.westeurope.cloudapp.azure.com/96224/submit/hw/2
+and upload test.py
+ verify you get the link to see the logs
+ 
+ 5. use the above link to see the logs. 
+ If no connection, check ssh connectivity.
+ 
+ 
+ 
+ 
+To  Delete the cluster:
+ az hdinsight delete --name noam-spark --resource-group ddcourse-infrastructure-group -y --no-wait
+ 
+ --------------
+ 
+ $ cat start_spark_cluster 
+#!/bin/bash 
+az deployment group create --resource-group ddscourse-infrastructure-group   --template-file ./template.json  --parameters parameters.json
+
+if [ $? -ne 0 ]; then
+      echo "Subject:Cron job: create spark cluster FAILED" | sendmail noam1023@gmail.com
+fi
+
+vmadmin@dds2020s-kafka:~$ cat stop_spark_cluster 
+#!/bin/bash 
+az hdinsight delete --name noam-spark --resource-group ddscourse-infrastructure-group -y --no-wait
+
+if [ $? -ne 0 ]; then
+      echo "Subject:Cron job: Delete spark cluster FAILED" | sendmail noam1023@gmail.com
+fi
+
+ 
+ times in UTC !!
+ 
+ $ crontab -l
+# Edit this file to introduce tasks to be run by cron.
+# m h  dom mon dow   command
+30 12 * * * /home/vmadmin/start_spark_cluster
+40 12 * * * /home/vmadmin/stop_spark_cluster
+
+ 
+ 
+ 
+ ==============
+ sending mail from linux shell:
+ generate google application password
+ sudo apt install ssmtp
+ configure the smtp.conf
+ 
+ 
