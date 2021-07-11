@@ -1,0 +1,7 @@
+#!/bin/bash -x
+docker run --network my_kafka \
+           --volume /tmp/my_msgs.txt:/data/my_msgs.txt \
+           confluentinc/cp-kafkacat \
+           kafkacat -b kafka3:9093 \
+                    -t my_msgs \
+                   -P  -l /data/my_msgs.txt
